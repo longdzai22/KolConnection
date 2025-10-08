@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KOL Connect - Quản lý hồ sơ ứng tuyển</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="poster.html">KOL <span class="text-primary-emphasis">Connect</span></a>
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          <li class="nav-item"><a class="nav-link" href="job-manage.html">Quản lý tin</a></li>
+          <li class="nav-item"><a class="btn btn-primary" href="job-post.html"><i class="bi bi-plus-circle me-1"></i>Đăng tin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <div class="row g-3 align-items-end mb-3">
+        <div class="col-md-4">
+          <label class="form-label">Từ khóa</label>
+          <input id="appSearchKw" type="text" class="form-control" placeholder="Tên ứng viên, job...">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Theo job</label>
+          <select id="appFilterJob" class="form-select">
+            <option value="">Tất cả</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-grid d-md-flex gap-2">
+          <button id="appSearchBtn" class="btn btn-primary"><i class="bi bi-search me-1"></i>Tìm kiếm</button>
+          <button id="appResetBtn" class="btn btn-outline-secondary">Đặt lại</button>
+        </div>
+      </div>
+
+      <div id="applicationsTable" class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Ứng viên</th>
+              <th>Job</th>
+              <th>CV</th>
+              <th class="text-end">Hành động</th>
+            </tr>
+          </thead>
+          <tbody id="applicationsBody">
+            <tr><td colspan="4" class="text-secondary">Chưa có hồ sơ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Offer Modal -->
+    <div class="modal fade" id="offerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Gửi yêu cầu hợp tác</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="offerForm">
+              <div class="mb-3">
+                <label class="form-label">Giá đề xuất (VNĐ)</label>
+                <input id="offerPrice" type="number" class="form-control" placeholder="Ví dụ: 2000000" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea id="offerNote" class="form-control" rows="3" placeholder="Mô tả ngắn về yêu cầu hợp tác" required></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button id="offerSendBtn" type="button" class="btn btn-primary">Gửi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+

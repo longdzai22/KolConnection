@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KOL Connect - Quản lý công việc</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="poster.html">KOL <span class="text-primary-emphasis">Connect</span></a>
+        <ul class="navbar-nav ms-auto align-items-center gap-2">
+          <li class="nav-item"><a class="nav-link" href="poster.html">Bảng điều khiển</a></li>
+          <li class="nav-item"><a class="btn btn-primary" href="job-post.html"><i class="bi bi-plus-circle me-1"></i>Đăng tin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container py-4">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h5 m-0">Công việc đã đăng</h1>
+        <a class="btn btn-outline-primary" href="job-post.html"><i class="bi bi-plus-circle me-1"></i>Đăng tin mới</a>
+      </div>
+
+      <div id="manageJobsList" class="row g-3"></div>
+      <div id="manageEmpty" class="text-secondary">Chưa có bài đăng nào.</div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+

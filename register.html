@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KOL Connect - Đăng ký</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="home.html">KOL <span class="text-primary-emphasis">Connect</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nvb4" aria-controls="nvb4" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="nvb4" class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="home.html">Việc làm</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#login">Tạo CV</a></li>
+            <li class="nav-item"><a class="nav-link" href="dashboard.html">Hồ sơ</a></li>
+          </ul>
+          <div class="d-flex gap-2 align-items-center" id="authAreaHome">
+            <a href="index.html#login" class="btn btn-outline-primary" id="loginLink">Đăng nhập</a>
+            <a href="register.html" class="btn btn-primary" id="postJobLink">Đăng ký</a>
+          </div>
+          <div class="d-none align-items-center gap-2" id="userAreaHome">
+            <span class="text-secondary small" id="greetHome"></span>
+            <button class="btn btn-outline-primary" id="logoutBtnHome">Đăng xuất</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-8 col-lg-6">
+            <div class="card rounded-4 shadow-sm border-0">
+              <div class="card-body p-4 p-md-5">
+                <h1 class="h4 fw-bold mb-4 text-center">Đăng ký</h1>
+                <form id="registerForm" novalidate>
+                  <div class="mb-3">
+                    <label for="regName" class="form-label">Họ và tên</label>
+                    <div class="input-group">
+                      <span class="input-group-text">👤</span>
+                      <input type="text" id="regName" class="form-control" placeholder="Nhập họ tên" required>
+                      <div class="invalid-feedback">Vui lòng nhập họ tên.</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="regEmail" class="form-label">Email</label>
+                    <div class="input-group">
+                      <span class="input-group-text">✉️</span>
+                      <input type="email" id="regEmail" class="form-control" placeholder="Nhập email" required>
+                      <div class="invalid-feedback">Vui lòng nhập email hợp lệ.</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="regPassword" class="form-label">Mật khẩu</label>
+                    <div class="input-group">
+                      <span class="input-group-text">🔒</span>
+                      <input type="password" id="regPassword" class="form-control" placeholder="Nhập mật khẩu" required>
+                      <div class="invalid-feedback">Mật khẩu không được để trống.</div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="regPassword2" class="form-label">Xác nhận mật khẩu</label>
+                    <div class="input-group">
+                      <span class="input-group-text">🔒</span>
+                      <input type="password" id="regPassword2" class="form-control" placeholder="Nhập lại mật khẩu" required>
+                      <div class="invalid-feedback">Mật khẩu xác nhận không khớp.</div>
+                    </div>
+                  </div>
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">
+                      Tôi đã đọc và đồng ý với Điều khoản dịch vụ và Chính sách bảo mật
+                    </label>
+                    <div class="invalid-feedback">Bạn cần đồng ý với điều khoản.</div>
+                  </div>
+                  <button type="submit" class="btn btn-success w-100 rounded-3">Đăng ký</button>
+                </form>
+
+                <div class="text-center text-secondary my-3">Hoặc đăng nhập bằng</div>
+                <div class="d-grid gap-2">
+                  <button class="btn btn-danger rounded-3" type="button">Google</button>
+                  <button class="btn btn-primary rounded-3" type="button">Facebook</button>
+                  <button class="btn btn-dark rounded-3" type="button">LinkedIn</button>
+                </div>
+
+                <p class="text-center mt-3 mb-0 small">Đã có tài khoản? <a href="index.html#login">Đăng nhập ngay</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 bg-white border-top">
+      <div class="container text-center text-secondary small">
+        © <span id="year"></span> KOL Connect. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+

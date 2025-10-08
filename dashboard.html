@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KOL Connect - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-primary" href="home.html">
+          KOL <span class="text-primary-emphasis">Connect</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nvb2" aria-controls="nvb2" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="nvb2" class="collapse navbar-collapse">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="home.html">Việc làm</a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#login">Tạo CV</a></li>
+            <li class="nav-item"><a class="nav-link" href="dashboard.html">Hồ sơ</a></li>
+          </ul>
+          <div class="d-flex gap-2 align-items-center" id="authAreaHome">
+            <a href="index.html#login" class="btn btn-outline-primary" id="loginLink">Đăng nhập</a>
+            <a href="register.html" class="btn btn-primary" id="postJobLink">Đăng ký</a>
+          </div>
+          <div class="d-none align-items-center gap-2" id="userAreaHome">
+            <span class="text-secondary small" id="greetHome"></span>
+            <button class="btn btn-outline-primary" id="logoutBtnHome">Đăng xuất</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main class="py-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card rounded-4 shadow-sm border-0">
+              <div class="card-body p-4 p-md-5">
+                <h2 class="h4 fw-bold mb-4">Tạo/Cập nhật CV</h2>
+                <form id="cvForm" novalidate>
+                  <div class="mb-3">
+                    <label for="fullName" class="form-label">Họ tên</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="Nguyễn Văn A" required>
+                    <div class="invalid-feedback">Vui lòng nhập họ tên.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="position" class="form-label">Vị trí ứng tuyển</label>
+                    <input type="text" id="position" class="form-control" placeholder="Frontend Developer" required>
+                    <div class="invalid-feedback">Vui lòng nhập vị trí.</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="skills" class="form-label">Kỹ năng</label>
+                    <textarea id="skills" class="form-control" rows="3" placeholder="HTML, CSS, JavaScript, Bootstrap" required></textarea>
+                    <div class="invalid-feedback">Vui lòng nhập kỹ năng.</div>
+                  </div>
+                  <div class="mb-4">
+                    <label for="experience" class="form-label">Kinh nghiệm</label>
+                    <textarea id="experience" class="form-control" rows="4" placeholder="Mô tả kinh nghiệm làm việc của bạn" required></textarea>
+                    <div class="invalid-feedback">Vui lòng nhập kinh nghiệm.</div>
+                  </div>
+                  <button type="submit" class="btn btn-primary rounded-3">Lưu CV</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card rounded-4 shadow-sm border-0 h-100">
+              <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h2 class="h4 fw-bold mb-0">Xem CV</h2>
+                  <span class="badge bg-primary-subtle text-primary">Preview</span>
+                </div>
+                <div id="cvPreview" class="cv-preview">
+                  <div class="text-secondary">Chưa có dữ liệu. Hãy điền form và bấm "Lưu CV".</div>
+                </div>
+
+                <hr class="my-4">
+                <div>
+                  <h3 class="h6 mb-2">CV PDF của bạn</h3>
+                  <div class="small text-secondary mb-2">Tải lên tệp PDF (tối đa ~2MB).</div>
+                  <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <input id="cvPdfInput" type="file" accept="application/pdf" class="form-control" style="max-width: 330px;">
+                    <button id="cvPdfUploadBtn" class="btn btn-outline-primary">Tải lên</button>
+                    <a id="cvPdfLink" href="#" class="btn btn-link d-none" download>📄 Tải CV đã lưu</a>
+                    <button id="cvPdfRemoveBtn" class="btn btn-outline-danger d-none">Xóa CV</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-4 bg-white border-top mt-5">
+      <div class="container text-center text-secondary small">
+        © <span id="year"></span> KOL Connect. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+  </html>
+
+

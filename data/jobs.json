@@ -1,0 +1,292 @@
+[
+  {
+    "id": "hz-mkt-001",
+    "title": "Nhân viên Marketing Online",
+    "company": "HAZALY",
+    "location": "Hồ Chí Minh",
+    "salary": "10 - 15 triệu + thưởng KPI",
+    "type": "Toàn thời gian",
+    "postedAt": "2 ngày trước",
+    "description": [
+      "Lên kế hoạch và triển khai các chiến dịch marketing online.",
+      "Quản lý fanpage, viết nội dung và chạy quảng cáo Facebook, Google.",
+      "Theo dõi, tối ưu hiệu quả quảng cáo và ngân sách marketing."
+    ],
+    "requirements": [
+      "Tốt nghiệp chuyên ngành Marketing hoặc liên quan.",
+      "Có ít nhất 1 năm kinh nghiệm chạy quảng cáo online.",
+      "Sáng tạo, nhanh nhẹn, chịu học hỏi."
+    ],
+    "benefits": [
+      "Thưởng KPI theo hiệu quả chiến dịch.",
+      "Cơ hội thăng tiến lên trưởng nhóm Marketing.",
+      "Được đào tạo nâng cao chuyên môn."
+    ],
+    "contact": {
+      "name": "Phòng Tuyển dụng",
+      "email": "tuyendung@hazaly.vn",
+      "phone": "028-8888-1234"
+    }
+  },
+  {
+    "id": "rv-acc-002",
+    "title": "Kế toán nội bộ",
+    "company": "Công ty RAVI",
+    "location": "Hà Nội",
+    "salary": "10 - 13 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "5 ngày trước",
+    "description": [
+      "Theo dõi thu chi, lập báo cáo tài chính nội bộ.",
+      "Quản lý chứng từ, hóa đơn, đối soát công nợ.",
+      "Phối hợp với các phòng ban để hoàn thiện hồ sơ kế toán."
+    ],
+    "requirements": [
+      "Tốt nghiệp CĐ/ĐH kế toán, kiểm toán.",
+      "Thành thạo Excel, phần mềm Misa/Bravo.",
+      "Cẩn thận, trung thực, có tinh thần trách nhiệm."
+    ],
+    "benefits": [
+      "Lương tháng 13, thưởng theo hiệu quả công việc.",
+      "Chế độ BHXH, BHYT đầy đủ.",
+      "Môi trường làm việc ổn định, thân thiện."
+    ],
+    "contact": {
+      "name": "Phòng Hành chính - Nhân sự",
+      "email": "hr@ravi.vn",
+      "phone": "024-1234-5678"
+    }
+  },
+  {
+    "id": "bt-sale-003",
+    "title": "Nhân viên Kinh doanh Dự án",
+    "company": "Công ty TNHH BT Solar",
+    "location": "Đà Nẵng",
+    "salary": "12 - 20 triệu + hoa hồng",
+    "type": "Toàn thời gian",
+    "postedAt": "1 ngày trước",
+    "description": [
+      "Phát triển khách hàng mảng năng lượng mặt trời, dự án công nghiệp.",
+      "Đàm phán, ký kết hợp đồng và theo dõi tiến độ triển khai.",
+      "Báo cáo doanh số và kết quả hàng tuần."
+    ],
+    "requirements": [
+      "Nam/Nữ, tuổi 24-35, có kinh nghiệm sales kỹ thuật.",
+      "Ưu tiên từng làm trong lĩnh vực năng lượng hoặc thiết bị công nghiệp.",
+      "Có khả năng giao tiếp và thuyết trình tốt."
+    ],
+    "benefits": [
+      "Thu nhập hấp dẫn không giới hạn theo doanh số.",
+      "Phụ cấp công tác, điện thoại, xăng xe.",
+      "Được đào tạo chuyên môn sản phẩm và kỹ năng bán hàng."
+    ],
+    "contact": {
+      "name": "Phòng Tuyển dụng",
+      "email": "tuyendung@btsolar.vn",
+      "phone": "0236-555-6789"
+    }
+  },
+  {
+    "id": "tech-it-004",
+    "title": "Nhân viên IT Helpdesk",
+    "company": "Techwave Việt Nam",
+    "location": "Hà Nội",
+    "salary": "9 - 12 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "Hôm qua",
+    "description": [
+      "Hỗ trợ người dùng xử lý sự cố phần mềm, phần cứng.",
+      "Cài đặt, bảo trì hệ thống mạng nội bộ, máy chủ, thiết bị văn phòng.",
+      "Quản lý và backup dữ liệu hệ thống định kỳ."
+    ],
+    "requirements": [
+      "Tốt nghiệp ngành CNTT hoặc tương đương.",
+      "Hiểu biết cơ bản về mạng LAN/WAN, Windows Server.",
+      "Có kinh nghiệm 1 năm vị trí tương tự là lợi thế."
+    ],
+    "benefits": [
+      "Thưởng hiệu suất làm việc, hỗ trợ ăn trưa.",
+      "Được học hỏi và phát triển trong môi trường IT chuyên nghiệp.",
+      "Tham gia đầy đủ chế độ bảo hiểm, nghỉ lễ theo quy định."
+    ],
+    "contact": {
+      "name": "Phòng Nhân sự",
+      "email": "hr@techwave.vn",
+      "phone": "024-7899-2233"
+    }
+  },
+  {
+    "id": "gr-admin-005",
+    "title": "Nhân viên Hành chính - Nhân sự",
+    "company": "Green Group",
+    "location": "Hà Nội",
+    "salary": "8 - 11 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "3 ngày trước",
+    "description": [
+      "Soạn thảo, lưu trữ hồ sơ, hợp đồng lao động.",
+      "Tuyển dụng nhân sự và chấm công hàng tháng.",
+      "Tổ chức sự kiện nội bộ và hỗ trợ các công việc hành chính."
+    ],
+    "requirements": [
+      "Tốt nghiệp chuyên ngành quản trị nhân lực hoặc hành chính.",
+      "Kỹ năng giao tiếp, sắp xếp công việc tốt.",
+      "Thành thạo MS Office, cẩn thận, chu đáo."
+    ],
+    "benefits": [
+      "Thưởng hiệu quả công việc, lương tháng 13.",
+      "Cơ hội phát triển lên vị trí HR Executive.",
+      "Tham gia các khóa đào tạo nội bộ."
+    ],
+    "contact": {
+      "name": "Phòng HCNS",
+      "email": "hr@green.vn",
+      "phone": "024-3333-8888"
+    }
+  },
+  {
+    "id": "mk-content-006",
+    "title": "Nhân viên Content Marketing",
+    "company": "Mika Media",
+    "location": "Hồ Chí Minh",
+    "salary": "8 - 12 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "4 ngày trước",
+    "description": [
+      "Viết nội dung cho website, fanpage, Tiktok.",
+      "Phối hợp với team thiết kế và chạy quảng cáo để tối ưu nội dung.",
+      "Tham gia brainstorming ý tưởng chiến dịch truyền thông."
+    ],
+    "requirements": [
+      "Có kinh nghiệm 6 tháng trở lên làm content.",
+      "Biết nắm bắt trend, có khả năng sáng tạo cao.",
+      "Ưu tiên từng làm ngành mỹ phẩm/thời trang."
+    ],
+    "benefits": [
+      "Thưởng KPI hàng tháng.",
+      "Làm việc trong môi trường trẻ, năng động.",
+      "Cơ hội học hỏi về marketing tổng thể."
+    ],
+    "contact": {
+      "name": "Ms. Linh - HR",
+      "email": "linh@mika.vn",
+      "phone": "028-6666-9090"
+    }
+  },
+  {
+    "id": "tt-cs-007",
+    "title": "Nhân viên Chăm sóc khách hàng",
+    "company": "TT Commerce",
+    "location": "Hà Nội",
+    "salary": "7 - 10 triệu + thưởng KPI",
+    "type": "Toàn thời gian",
+    "postedAt": "Hôm nay",
+    "description": [
+      "Tiếp nhận và xử lý yêu cầu từ khách hàng qua điện thoại, email.",
+      "Theo dõi và đảm bảo chất lượng dịch vụ hậu mãi.",
+      "Phối hợp với bộ phận vận hành và kỹ thuật khi có vấn đề phát sinh."
+    ],
+    "requirements": [
+      "Tốt nghiệp trung cấp trở lên.",
+      "Giao tiếp tốt, giọng nói dễ nghe.",
+      "Ưu tiên ứng viên có kinh nghiệm CSKH online."
+    ],
+    "benefits": [
+      "Thưởng KPI theo quý.",
+      "Cơ hội phát triển lên Team Leader CSKH.",
+      "Được đào tạo kỹ năng giao tiếp và xử lý tình huống."
+    ],
+    "contact": {
+      "name": "Phòng Tuyển dụng",
+      "email": "hr@ttcommerce.vn",
+      "phone": "024-5555-1122"
+    }
+  },
+  {
+    "id": "sg-log-008",
+    "title": "Nhân viên Logistics",
+    "company": "SG Global Logistics",
+    "location": "Hồ Chí Minh",
+    "salary": "12 - 18 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "2 ngày trước",
+    "description": [
+      "Làm việc với hãng tàu, forwarder và khách hàng.",
+      "Theo dõi chứng từ, tình trạng hàng hóa xuất nhập khẩu.",
+      "Báo cáo định kỳ tình hình lô hàng."
+    ],
+    "requirements": [
+      "Tốt nghiệp chuyên ngành xuất nhập khẩu, logistics.",
+      "Tiếng Anh giao tiếp, đọc hiểu chứng từ tốt.",
+      "Kinh nghiệm ít nhất 1 năm vị trí tương tự."
+    ],
+    "benefits": [
+      "Thưởng doanh số theo tháng.",
+      "Cơ hội đi công tác nước ngoài.",
+      "Bảo hiểm đầy đủ, nghỉ phép năm theo quy định."
+    ],
+    "contact": {
+      "name": "Ms. Thảo",
+      "email": "thao@sgglobal.vn",
+      "phone": "028-7777-4567"
+    }
+  },
+  {
+    "id": "hc-telesale-009",
+    "title": "Nhân viên Telesale Bảo hiểm",
+    "company": "HC Finance",
+    "location": "Hồ Chí Minh",
+    "salary": "8 - 15 triệu + hoa hồng",
+    "type": "Toàn thời gian",
+    "postedAt": "3 ngày trước",
+    "description": [
+      "Gọi điện tư vấn sản phẩm bảo hiểm nhân thọ, phi nhân thọ.",
+      "Chăm sóc và duy trì mối quan hệ khách hàng hiện hữu.",
+      "Báo cáo kết quả hàng ngày cho quản lý."
+    ],
+    "requirements": [
+      "Giọng nói chuẩn, tự tin, không nói ngọng.",
+      "Ưu tiên ứng viên có kinh nghiệm telesale bảo hiểm.",
+      "Chịu được áp lực doanh số."
+    ],
+    "benefits": [
+      "Hoa hồng cao, không giới hạn thu nhập.",
+      "Được đào tạo kỹ năng sale và sản phẩm bảo hiểm.",
+      "Cơ hội lên vị trí Trưởng nhóm telesale."
+    ],
+    "contact": {
+      "name": "Phòng nhân sự",
+      "email": "hr@hcfinance.vn",
+      "phone": "028-8888-9090"
+    }
+  },
+  {
+    "id": "vd-qa-010",
+    "title": "Nhân viên Kiểm thử phần mềm (QA/QC)",
+    "company": "VDev Technology",
+    "location": "Hà Nội",
+    "salary": "12 - 18 triệu",
+    "type": "Toàn thời gian",
+    "postedAt": "Hôm qua",
+    "description": [
+      "Viết test case, thực hiện kiểm thử tính năng phần mềm.",
+      "Phối hợp với dev phát hiện, báo lỗi và theo dõi fix bug.",
+      "Tham gia đảm bảo chất lượng trước khi release."
+    ],
+    "requirements": [
+      "Kinh nghiệm QA ít nhất 1 năm.",
+      "Biết sử dụng tool test cơ bản: Postman, Jira, Testlink.",
+      "Tư duy logic, cẩn thận, có trách nhiệm cao."
+    ],
+    "benefits": [
+      "Thưởng theo dự án, lương tháng 13.",
+      "Bảo hiểm đầy đủ, làm việc hybrid 2-3 ngày/tuần.",
+      "Cơ hội học automation testing."
+    ],
+    "contact": {
+      "name": "Phòng HR",
+      "email": "hr@vdev.vn",
+      "phone": "024-9999-7766"
+    }
+  }
+]

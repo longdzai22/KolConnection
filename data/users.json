@@ -1,0 +1,12 @@
+{
+  "seekers": [
+    { "email": "alice@example.com", "password": "123456", "name": "Alice", "role": "seeker" },
+    { "email": "bob@example.com", "password": "123456", "name": "Bob", "role": "seeker" }
+  ],
+  "posters": [
+    { "email": "hr@ravi.vn", "password": "ravi123", "name": "HR RAVI", "role": "poster" },
+    { "email": "tuyendung@hazaly.vn", "password": "hazaly123", "name": "HR HAZALY", "role": "poster" }
+  ]
+}
+
+

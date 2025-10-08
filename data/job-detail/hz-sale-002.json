@@ -1,0 +1,29 @@
+{
+  "id": "hz-sale-002",
+  "title": "Nhân viên Sale/Trực Page",
+  "company": "HAZALY",
+  "location": "Hồ Chí Minh",
+  "salary": "7 - 12 triệu + KPI",
+  "type": "Toàn thời gian",
+  "postedAt": "Hôm nay",
+  "description": [
+    "Trực page, tư vấn khách hàng qua inbox/điện thoại.",
+    "Chốt đơn, phối hợp vận hành giao hàng.",
+    "Chăm sóc khách hàng sau bán để tăng tỉ lệ quay lại."
+  ],
+  "requirements": [
+    "Có kinh nghiệm trực page/chốt đơn là lợi thế.",
+    "Giao tiếp tốt, chịu khó, làm việc theo ca linh hoạt."
+  ],
+  "benefits": [
+    "Lương cơ bản + thưởng KPI, review 6 tháng/lần.",
+    "Đào tạo kỹ năng bán hàng, môi trường năng động."
+  ],
+  "contact": {
+    "name": "Phòng Tuyển dụng",
+    "email": "hr@hazaly.vn",
+    "phone": "028-9999-8888"
+  }
+}
+
+
