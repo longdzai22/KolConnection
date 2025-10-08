@@ -125,7 +125,7 @@
   gotoCategories.addEventListener('click', ()=>{ renderCategories(); });
   gotoDisputes.addEventListener('click', ()=>{ main.innerHTML = '<h6>Khiếu nại & Tranh chấp</h6><p class="small text-muted">Danh sách tranh chấp (demo).</p>'; });
 
-  adminLogout.addEventListener('click', ()=>{ localStorage.removeItem('kol_admin_auth'); location.href='admin.html'; });
+  adminLogout.addEventListener('click', ()=>{ localStorage.removeItem('kol_admin_auth'); location.href='index.html'; });
 
   // stats
   const bookings = JSON.parse(localStorage.getItem('tcv_bookings')||'[]');

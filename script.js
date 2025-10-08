@@ -215,6 +215,22 @@ const fetchJobs = async () => {
   }
 };
 
+// Load users.json and return a map by email for quick lookup
+const loadUsersMap = async () => {
+  try {
+    const res = await fetch('data/users.json', { cache: 'no-store' });
+    if (!res.ok) return {};
+    const d = await res.json();
+    const map = {};
+    (d.seekers || []).forEach(u => { if (u.email) map[u.email] = u; });
+    (d.posters || []).forEach(u => { if (u.email) map[u.email] = u; });
+    (d.admin || []).forEach(u => { if (u.email) map[u.email] = u; });
+    return map;
+  } catch (e) {
+    return {};
+  }
+};
+
 const renderDetailPage = async () => {
   const jobId = getQueryParam('id');
   const jobs = await fetchJobs();
@@ -329,6 +345,7 @@ const renderDetailPage = async () => {
       posterEmail,
       candidateEmail: email,
       candidateName,
+      candidateCv: persist.loadCv(),
       cvPdf,
       status: 'applied',
       createdAt: Date.now()
@@ -367,16 +384,10 @@ const initIndexPage = () => {
     const inputPwd = pwd.value.trim();
 
     fetchUsers().then((data) => {
-      const allUsers = [...(data.seekers||[]), ...(data.posters||[])];
+      // include admin array from data/users.json if present
+      const allUsers = [...(data.seekers||[]), ...(data.posters||[]), ...(data.admin||[])];
       const found = allUsers.find(u => u.email.toLowerCase() === inputEmail.toLowerCase() && u.password === inputPwd);
       if (!found) {
-        // support built-in admin credentials so admin can login from same form
-        if (inputEmail.toLowerCase() === 'admin@kol.local' && inputPwd === 'admin123') {
-          persist.setUserInfo({ email: inputEmail, role: 'admin', name: 'Administrator' });
-          showToast('Đăng nhập quản trị viên', 'success');
-          setTimeout(() => window.location.href = 'admin-dashboard.html', 600);
-          return;
-        }
         showToast('Email hoặc mật khẩu không đúng', 'error');
         return;
       }
@@ -782,33 +793,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Poster inbox rendering
   if (onEmployer || window.location.pathname.endsWith('poster.html')) {
-    const applications = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
-    const myEmail = persist.getEmail();
-    const myApps = applications.filter(a => a.posterEmail === myEmail);
-    const list = document.getElementById('applicationsList');
-    const count = document.getElementById('inboxCount');
-    if (count) count.textContent = String(myApps.length);
-    if (list) {
-      if (!myApps.length) {
-        list.innerHTML = '<div class="text-secondary small">Chưa có hồ sơ.</div>';
-      } else {
-        list.innerHTML = myApps.map(a => {
-          const lastLog = (a.log && a.log.length) ? a.log[0] : null;
-          const logText = lastLog ? (lastLog.action === 'offer_sent' ? `Đã gửi đề nghị ${lastLog.price?(' - ' + lastLog.price + ' VNĐ'):''}` : lastLog.action === 'offer_accepted' ? 'Người tìm việc đã chấp nhận' : lastLog.action === 'offer_declined' ? 'Người tìm việc đã từ chối' : lastLog.action === 'offer_cancelled' ? 'Đề nghị đã bị huỷ' : '') : '';
-          return `
-          <div class="border rounded-3 p-2">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <div class="fw-semibold small">${a.candidateName || a.candidateEmail}</div>
-                <div class="text-secondary small">Ứng tuyển: ${a.jobTitle}</div>
-                ${logText?`<div class="small text-secondary mt-1">${logText}</div>`:''}
+    (async () => {
+      const usersMap = await loadUsersMap();
+      const applications = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
+      const myEmail = persist.getEmail();
+      const myApps = applications.filter(a => a.posterEmail === myEmail);
+      const list = document.getElementById('applicationsList');
+      const count = document.getElementById('inboxCount');
+      if (count) count.textContent = String(myApps.length);
+      if (list) {
+        if (!myApps.length) {
+          list.innerHTML = '<div class="text-secondary small">Chưa có hồ sơ.</div>';
+        } else {
+          list.innerHTML = myApps.map(a => {
+            const lastLog = (a.log && a.log.length) ? a.log[0] : null;
+            const logText = lastLog ? (lastLog.action === 'offer_sent' ? `Đã gửi đề nghị ${lastLog.price?(' - ' + lastLog.price + ' VNĐ'):''}` : lastLog.action === 'offer_accepted' ? 'Người tìm việc đã chấp nhận' : lastLog.action === 'offer_declined' ? 'Người tìm việc đã từ chối' : lastLog.action === 'offer_cancelled' ? 'Đề nghị đã bị huỷ' : '') : '';
+            const seeker = usersMap[a.candidateEmail] || null;
+            const displayName = a.candidateName || seeker?.name || a.candidateEmail;
+            const seekerInfo = seeker ? `${seeker.role ? (seeker.role === 'seeker' ? '' : seeker.role) : ''}` : '';
+            return `
+            <div class="border rounded-3 p-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold small"> Tên ứng viên: ${displayName}</div>
+                  <div class="text-secondary small">Ứng tuyển: ${a.jobTitle}</div>
+                  ${logText?`<div class="small text-secondary mt-1">${logText}</div>`:''}
+                  ${a.candidateCv?`<div class="small text-muted mt-1">${a.candidateCv.position?(`${a.candidateCv.position} • `):''}${a.candidateCv.skills?(`${a.candidateCv.skills.split(',').slice(0,3).join(', ')}`):''}</div>`:''}
+                </div>
+                  <a class="btn btn-sm btn-outline-primary" href="${a.cvPdf}" download>CV PDF</a>
               </div>
-                <a class="btn btn-sm btn-outline-primary" href="${a.cvPdf}" download>CV PDF</a>
-            </div>
-            </div>
-        `}).join('');
+              </div>
+          `}).join('');
+        }
       }
-    }
+    })();
   }
 
   // Manage posted jobs
@@ -853,13 +871,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Poster applications management page
   if (window.location.pathname.endsWith('applications-manage.html')) {
-    const myEmail = persist.getEmail();
-    const apps = JSON.parse(localStorage.getItem('tcv_applications') || '[]').filter(a => a.posterEmail === myEmail);
-    const body = document.getElementById('applicationsBody');
-    const kwInput = document.getElementById('appSearchKw');
-    const jobSelect = document.getElementById('appFilterJob');
-    const btnSearch = document.getElementById('appSearchBtn');
-    const btnReset = document.getElementById('appResetBtn');
+    (async () => {
+      const usersMap = await loadUsersMap();
+      const myEmail = persist.getEmail();
+      const apps = JSON.parse(localStorage.getItem('tcv_applications') || '[]').filter(a => a.posterEmail === myEmail);
+      const body = document.getElementById('applicationsBody');
+      const kwInput = document.getElementById('appSearchKw');
+      const jobSelect = document.getElementById('appFilterJob');
+      const btnSearch = document.getElementById('appSearchBtn');
+      const btnReset = document.getElementById('appResetBtn');
 
     // fill job filter
     const jobTitles = Array.from(new Set(apps.map(a => a.jobTitle))).sort();
@@ -876,13 +896,23 @@ document.addEventListener('DOMContentLoaded', () => {
       body.innerHTML = rows.map(a => `
         <tr>
           <td>
-            <div class="fw-semibold">${a.candidateName || a.candidateEmail}</div>
+            <div class="fw-semibold">${a.candidateName || (usersMap[a.candidateEmail]?.name) || a.candidateEmail}</div>
             <div class="text-secondary small">${a.candidateEmail}</div>
+            ${a.candidateCv?`<div class="small text-muted mt-1">${a.candidateCv.position?(`${a.candidateCv.position} • `):''}${a.candidateCv.skills?(`${a.candidateCv.skills.split(',').slice(0,3).join(', ')}`):''}</div>`:''}
+            ${usersMap[a.candidateEmail] ? `
+              <div class="small text-muted mt-1">
+                ${usersMap[a.candidateEmail].title ? `<div><strong>Chức danh:</strong> ${usersMap[a.candidateEmail].title}</div>` : ''}
+                ${usersMap[a.candidateEmail].location ? `<div><strong>Địa chỉ:</strong> ${usersMap[a.candidateEmail].location}</div>` : ''}
+                ${usersMap[a.candidateEmail].phone ? `<div><strong>Điện thoại:</strong> ${usersMap[a.candidateEmail].phone}</div>` : ''}
+                ${usersMap[a.candidateEmail].bio ? `<div class="mt-1">${usersMap[a.candidateEmail].bio}</div>` : ''}
+              </div>
+            ` : ''}
           </td>
           <td>${a.jobTitle} ${a.status?`<span class='badge ${a.status==='rejected'?'bg-danger':a.status==='offered'?'bg-primary':a.status==='offered-accepted'?'bg-success':a.status==='offered-declined'?'bg-danger':'bg-secondary'} ms-2'>${a.status==='rejected'?'Đã từ chối':a.status==='offered'?'Đã gửi đề nghị':a.status==='offered-accepted'?'Người tìm việc đã chấp nhận':a.status==='offered-declined'?'Người tìm việc đã từ chối':'Đã nộp'}</span>`:''}</td>
           <td>${a.cvPdf ? `<a href="${a.cvPdf}" download>CV PDF</a>` : '<span class="text-secondary">(Chưa đính kèm)</span>'}</td>
           <td class="text-end">
             <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary btn-view" data-cand="${a.candidateEmail}" data-job="${a.jobId}">Xem</button>
               <button class="btn btn-sm btn-outline-danger btn-reject" data-cand="${a.candidateEmail}" data-job="${a.jobId}">Từ chối</button>
               <button class="btn btn-sm btn-primary btn-offer" data-cand="${a.candidateEmail}" data-job="${a.jobId}">Gửi đề nghị</button>
               <button class="btn btn-sm btn-outline-secondary btn-delete-app" data-cand="${a.candidateEmail}" data-job="${a.jobId}">Xóa</button>
@@ -898,7 +928,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const all = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
           const idx = all.findIndex(x => x.candidateEmail===cand && x.jobId===jobId && x.posterEmail===myEmail);
           if (idx>-1) {
+            // mark as rejected and add a log entry so the seeker sees a notification
             all[idx].status = 'rejected';
+            all[idx].log = all[idx].log || [];
+            all[idx].log.unshift({ ts: Date.now(), by: myEmail, action: 'application_rejected', note: 'Hồ sơ bị từ chối bởi nhà tuyển dụng' });
             localStorage.setItem('tcv_applications', JSON.stringify(all));
             showToast('Đã từ chối hồ sơ', 'success');
             doFilter();
@@ -967,6 +1000,73 @@ document.addEventListener('DOMContentLoaded', () => {
           modalEl.addEventListener('hidden.bs.modal', () => send.removeEventListener('click', onSend), { once: true });
         });
       });
+
+      // view candidate details (modal)
+      const ensureModal = () => {
+        if (document.getElementById('candidateModal')) return;
+        const modalHtml = `
+        <div class="modal fade" id="candidateModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Thông tin ứng viên</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div id="candidateMeta"></div>
+                <hr />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      };
+
+      body.querySelectorAll('.btn-view').forEach(btn => {
+        on(btn, 'click', async () => {
+          const cand = btn.getAttribute('data-cand');
+          ensureModal();
+          const modalEl = document.getElementById('candidateModal');
+          const metaEl = document.getElementById('candidateMeta');
+          const cvPreviewEl = document.getElementById('candidateCvPreview');
+          const usersMap = await loadUsersMap();
+          const seeker = usersMap[cand] || null;
+          // fill meta
+          // Build meta HTML using fields actually present in data/users.json
+          const skillsList = seeker?.skills ? (Array.isArray(seeker.skills) ? seeker.skills.join(', ') : seeker.skills) : '';
+          metaEl.innerHTML = `
+            <div class="small">
+              <div class="fw-semibold mb-1"><strong>Tên ứng viên: </strong> ${seeker?.name || cand}</div>
+              ${seeker?.position ? `<div><strong>Vị trí:</strong> ${seeker.position}</div>` : ''}
+              ${skillsList ? `<div><strong>Kỹ năng:</strong> ${skillsList}</div>` : ''}
+              ${seeker?.experience ? `<div><strong>Kinh nghiệm:</strong> ${seeker.experience}</div>` : ''}
+              ${seeker?.description ? `<div class="mt-2">${seeker.description}</div>` : ''}
+            </div>`;
+          // render CV snapshot if stored in applications
+          const allApps = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
+          const app = allApps.find(x => x.candidateEmail === cand && x.posterEmail === persist.getEmail());
+          const cvData = app?.candidateCv || null;
+          renderCvPreview(cvPreviewEl, cvData);
+          // add CV PDF download link if available
+          const footer = modalEl.querySelector('.modal-footer');
+          // remove existing download button if any
+          const existingDl = modalEl.querySelector('.btn-download-cv');
+          if (existingDl) existingDl.remove();
+          if (app && app.cvPdf) {
+            const dl = document.createElement('a');
+            dl.className = 'btn btn-outline-primary btn-download-cv me-2';
+            dl.href = app.cvPdf;
+            dl.download = `${seeker?.name || cand}-CV.pdf`;
+            dl.textContent = 'Tải CV PDF';
+            footer.insertBefore(dl, footer.firstChild);
+          }
+          const modal = new bootstrap.Modal(modalEl);
+          modal.show();
+        });
+      });
     };
 
     const doFilter = () => {
@@ -986,6 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
     on(jobSelect, 'change', doFilter);
     on(btnReset, 'click', () => { kwInput.value=''; jobSelect.value=''; doFilter(); });
     doFilter();
+    })();
   }
 
   // Seeker applied page
@@ -1000,12 +1101,18 @@ document.addEventListener('DOMContentLoaded', () => {
     list.innerHTML = apps.map(a => {
       const myOffers = offers.filter(o => o.jobId === a.jobId);
       const offerHtml = myOffers.length ? myOffers.map(o => `<div class="border rounded-3 p-2 mt-2"><div class="small">Đề nghị: <strong>${o.price.toLocaleString()} VNĐ</strong> <span class="badge ${o.status==='accepted'?'bg-success':o.status==='declined'?'bg-danger':'bg-secondary'}">${o.status==='accepted'?'Đã chấp nhận':o.status==='declined'?'Đã từ chối':'Đã gửi'}</span></div><div class="small">${o.note}</div>${o.status==='sent'?`<div class='mt-2 d-flex gap-2'><button class='btn btn-sm btn-success btn-offer-accept' data-id='${o.createdAt}' data-job='${a.jobId}'>Chấp nhận</button><button class='btn btn-sm btn-outline-danger btn-offer-decline' data-id='${o.createdAt}' data-job='${a.jobId}'>Từ chối</button></div>`:''}</div>`).join('') : '<div class="text-secondary small mt-2">Chưa có đề nghị</div>';
+      // show application status and latest log for seeker awareness
+      const statusBadge = a.status ? `<div class="mt-2"><span class="badge ${a.status==='rejected'?'bg-danger':a.status==='offered'?'bg-primary':a.status==='offered-accepted'?'bg-success':a.status==='offered-declined'?'bg-danger':'bg-secondary'}">${a.status==='rejected'?'Đã bị từ chối':a.status==='offered'?'Đã nhận đề nghị':a.status==='offered-accepted'?'Đề nghị đã chấp nhận':a.status==='offered-declined'?'Đề nghị đã từ chối':'Đã ứng tuyển'}</span></div>` : '';
+      const lastAppLog = (a.log && a.log.length) ? a.log[0] : null;
+      const logHtml = lastAppLog ? `<div class="small text-secondary mt-1">${lastAppLog.action==='application_rejected' ? 'Nhà tuyển dụng đã từ chối hồ sơ của bạn' : lastAppLog.action==='offer_sent' ? `Nhận đề nghị: ${lastAppLog.price? (lastAppLog.price + ' VNĐ') : ''}` : lastAppLog.action==='offer_accepted' ? 'Bạn đã chấp nhận đề nghị' : lastAppLog.action==='offer_declined' ? 'Bạn đã từ chối đề nghị' : ''}</div>` : '';
       return `
         <div class="border rounded-4 p-3">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <div class="fw-semibold">${a.jobTitle}</div>
               <div class="text-secondary small">Nhà tuyển dụng: ${a.posterEmail || '—'}</div>
+              ${statusBadge}
+              ${logHtml}
             </div>
             ${a.cvPdf ? `<a class="btn btn-sm btn-outline-primary" href="${a.cvPdf}" download>CV PDF</a>` : ''}
           </div>

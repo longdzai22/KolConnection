@@ -1,12 +1,52 @@
 {
   "seekers": [
-    { "email": "alice@example.com", "password": "123456", "name": "Alice", "role": "seeker" },
-    { "email": "bob@example.com", "password": "123456", "name": "Bob", "role": "seeker" }
+    {
+      "email": "alice@example.com",
+      "password": "123456",
+      "name": "Alice",
+      "role": "seeker",
+      "skills": ["JavaScript", "HTML", "CSS"],
+      "position": "Frontend Developer",
+      "experience": "2 years at XYZ Company",
+      "description": "Passionate about building user-friendly web applications."
+    },
+    {
+      "email": "bob@example.com",
+      "password": "123456",
+      "name": "Bob",
+      "role": "seeker",
+      "skills": ["Python", "Django", "REST APIs"],
+      "position": "Backend Developer",
+      "experience": "3 years at ABC Corp",
+      "description": "Experienced in developing scalable backend systems."
+    }
   ],
   "posters": [
-    { "email": "hr@ravi.vn", "password": "ravi123", "name": "HR RAVI", "role": "poster" },
-    { "email": "tuyendung@hazaly.vn", "password": "hazaly123", "name": "HR HAZALY", "role": "poster" }
+    {
+      "email": "hr@ravi.vn",
+      "password": "ravi123",
+      "name": "HR RAVI",
+      "role": "poster",
+      "company": "Công ty RAVI",
+      "location": "Hà Nội",
+      "phone": "024-1234-5678"
+    },
+    {
+      "email": "tuyendung@hazaly.vn",
+      "password": "hazaly123",
+      "name": "HR HAZALY",
+      "role": "poster",
+      "company": "HAZALY",
+      "location": "Hồ Chí Minh",
+      "phone": "028-8888-1234"
+    }
+  ],
+  "admin": [
+    {
+      "email": "admin@kol.vn",
+      "password": "admin123",
+      "name": "adminMain",
+      "role": "admin"
+    }
   ]
 }
-
-
