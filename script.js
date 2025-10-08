@@ -370,6 +370,13 @@ const initIndexPage = () => {
       const allUsers = [...(data.seekers||[]), ...(data.posters||[])];
       const found = allUsers.find(u => u.email.toLowerCase() === inputEmail.toLowerCase() && u.password === inputPwd);
       if (!found) {
+        // support built-in admin credentials so admin can login from same form
+        if (inputEmail.toLowerCase() === 'admin@kol.local' && inputPwd === 'admin123') {
+          persist.setUserInfo({ email: inputEmail, role: 'admin', name: 'Administrator' });
+          showToast('Đăng nhập quản trị viên', 'success');
+          setTimeout(() => window.location.href = 'admin-dashboard.html', 600);
+          return;
+        }
         showToast('Email hoặc mật khẩu không đúng', 'error');
         return;
       }
@@ -378,6 +385,8 @@ const initIndexPage = () => {
       setTimeout(() => {
         if (found.role === 'poster') {
           window.location.href = 'poster.html';
+        } else if (found.role === 'admin') {
+          window.location.href = 'admin-dashboard.html';
         } else {
           window.location.href = 'home.html';
         }
@@ -499,6 +508,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (onIndex) initIndexPage();
   if (onDashboard) initDashboardPage();
   if (onHome) {
+    // show admin back button when logged in as admin
+    const adminBackArea = document.getElementById('adminBackArea');
+    try {
+      const role = persist.getRole();
+      if (adminBackArea) adminBackArea.classList.toggle('d-none', role !== 'admin');
+    } catch (e) {}
     // Suggested categories from dataset
     const suggestedWrap = document.getElementById('suggestedCats');
     const renderSuggestedCategories = (jobs) => {
