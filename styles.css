@@ -126,4 +126,24 @@ a:hover {
   border-radius: var(--radius-lg);
 }
 
+/* Poster sidebar tweaks */
+.list-group-flush .list-group-item {
+  border: none;
+}
+aside.list-group, .list-group.list-group-flush {
+  border-radius: 0;
+}
+aside .list-group-item.active {
+  background-color: var(--tcv-primary);
+  color: #fff;
+}
+/* ensure the aside column fills viewport and its content scrolls if long */
+aside.min-vh-100 { overflow-y: auto; }
+
+/* Home page enhancements */
+#catList li { list-style: none; }
+#topCompanies li { margin-left: .25rem; }
+.home-spotlight { background: linear-gradient(90deg, rgba(13,110,253,0.06), rgba(13,110,253,0.02)); border-radius: 12px; }
+.card.border-0.shadow-sm p.small { margin: 0; }
+
 

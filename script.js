@@ -777,17 +777,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!myApps.length) {
         list.innerHTML = '<div class="text-secondary small">Chưa có hồ sơ.</div>';
       } else {
-        list.innerHTML = myApps.map(a => `
+        list.innerHTML = myApps.map(a => {
+          const lastLog = (a.log && a.log.length) ? a.log[0] : null;
+          const logText = lastLog ? (lastLog.action === 'offer_sent' ? `Đã gửi đề nghị ${lastLog.price?(' - ' + lastLog.price + ' VNĐ'):''}` : lastLog.action === 'offer_accepted' ? 'Người tìm việc đã chấp nhận' : lastLog.action === 'offer_declined' ? 'Người tìm việc đã từ chối' : lastLog.action === 'offer_cancelled' ? 'Đề nghị đã bị huỷ' : '') : '';
+          return `
           <div class="border rounded-3 p-2">
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <div class="fw-semibold small">${a.candidateName || a.candidateEmail}</div>
                 <div class="text-secondary small">Ứng tuyển: ${a.jobTitle}</div>
+                ${logText?`<div class="small text-secondary mt-1">${logText}</div>`:''}
               </div>
-              <a class="btn btn-sm btn-outline-primary" href="${a.cvPdf}" download>CV PDF</a>
+                <a class="btn btn-sm btn-outline-primary" href="${a.cvPdf}" download>CV PDF</a>
             </div>
-          </div>
-        `).join('');
+            </div>
+        `}).join('');
       }
     }
   }
@@ -860,7 +864,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="fw-semibold">${a.candidateName || a.candidateEmail}</div>
             <div class="text-secondary small">${a.candidateEmail}</div>
           </td>
-          <td>${a.jobTitle} ${a.status?`<span class='badge ${a.status==='rejected'?'bg-danger':a.status==='offered'?'bg-primary':'bg-secondary'} ms-2'>${a.status==='rejected'?'Đã từ chối':a.status==='offered'?'Đã gửi đề nghị':'Đã nộp'}</span>`:''}</td>
+          <td>${a.jobTitle} ${a.status?`<span class='badge ${a.status==='rejected'?'bg-danger':a.status==='offered'?'bg-primary':a.status==='offered-accepted'?'bg-success':a.status==='offered-declined'?'bg-danger':'bg-secondary'} ms-2'>${a.status==='rejected'?'Đã từ chối':a.status==='offered'?'Đã gửi đề nghị':a.status==='offered-accepted'?'Người tìm việc đã chấp nhận':a.status==='offered-declined'?'Người tìm việc đã từ chối':'Đã nộp'}</span>`:''}</td>
           <td>${a.cvPdf ? `<a href="${a.cvPdf}" download>CV PDF</a>` : '<span class="text-secondary">(Chưa đính kèm)</span>'}</td>
           <td class="text-end">
             <div class="btn-group">
@@ -895,7 +899,20 @@ document.addEventListener('DOMContentLoaded', () => {
           const all = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
           const filtered = all.filter(x => !(x.candidateEmail===cand && x.jobId===jobId && x.posterEmail===myEmail));
           localStorage.setItem('tcv_applications', JSON.stringify(filtered));
-          showToast('Đã xóa hồ sơ', 'success');
+          // Also remove or mark related offers as cancelled
+          try {
+            const offers = JSON.parse(localStorage.getItem('tcv_offers') || '[]');
+            let changed = false;
+            const updated = offers.map(o => {
+              if (o.candidateEmail===cand && o.jobId===jobId && o.posterEmail===myEmail) {
+                changed = true;
+                return { ...o, status: 'cancelled' };
+              }
+              return o;
+            });
+            if (changed) localStorage.setItem('tcv_offers', JSON.stringify(updated));
+          } catch (e) { /* ignore */ }
+          showToast('Đã xóa hồ sơ (và huỷ các đề nghị liên quan)', 'success');
           doFilter();
         });
       });
@@ -913,13 +930,18 @@ document.addEventListener('DOMContentLoaded', () => {
           const onSend = () => {
             if (!price.value.trim() || !note.value.trim()) return;
             const offers = JSON.parse(localStorage.getItem('tcv_offers') || '[]');
-            offers.unshift({ posterEmail: myEmail, candidateEmail: cand, jobId, price: Number(price.value), note: note.value.trim(), status: 'sent', createdAt: Date.now() });
+            const offerObj = { posterEmail: myEmail, candidateEmail: cand, jobId, price: Number(price.value), note: note.value.trim(), status: 'sent', createdAt: Date.now() };
+            offers.unshift(offerObj);
             localStorage.setItem('tcv_offers', JSON.stringify(offers));
-            // update application status to offered
+            // update application status to offered and link the offer createdAt as offerId
             const all = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
             const idx = all.findIndex(x => x.candidateEmail===cand && x.jobId===jobId && x.posterEmail===myEmail);
             if (idx>-1) {
               all[idx].status = 'offered';
+              // add log/details field and link to offer
+              all[idx].offerId = offerObj.createdAt;
+              all[idx].log = all[idx].log || [];
+              all[idx].log.unshift({ ts: Date.now(), by: myEmail, action: 'offer_sent', offerId: offerObj.createdAt, note: offerObj.note, price: offerObj.price });
               localStorage.setItem('tcv_applications', JSON.stringify(all));
             }
             showToast('Đã gửi đề nghị hợp tác', 'success');
@@ -986,8 +1008,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idx>-1) {
           all[idx].status = 'accepted';
           localStorage.setItem('tcv_offers', JSON.stringify(all));
+          // Also update the corresponding application so poster inbox shows accepted status; add log
+          try {
+            const apps = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
+            const appIdx = apps.findIndex(a => a.jobId===jobId && a.candidateEmail===email && a.posterEmail===all[idx].posterEmail && (a.offerId===id || !a.offerId));
+            if (appIdx > -1) {
+              apps[appIdx].status = 'offered-accepted';
+              apps[appIdx].log = apps[appIdx].log || [];
+              apps[appIdx].log.unshift({ ts: Date.now(), by: email, action: 'offer_accepted', offerId: id });
+              localStorage.setItem('tcv_applications', JSON.stringify(apps));
+            }
+          } catch (e) { /* ignore */ }
+          // Update DOM in-place: change badge and remove accept/decline buttons for this offer
+          const badge = btn.closest('.border')?.querySelector('.badge');
+          if (badge) { badge.className = 'badge bg-success'; badge.textContent = 'Đã chấp nhận'; }
+          const actionsWrap = btn.closest('.border')?.querySelector('.mt-2');
+          if (actionsWrap) actionsWrap.innerHTML = "<div class='small text-success'>Bạn đã chấp nhận đề nghị.</div>";
           showToast('Đã chấp nhận đề nghị', 'success');
-          window.location.reload();
         }
       });
     });
@@ -1000,8 +1037,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idx>-1) {
           all[idx].status = 'declined';
           localStorage.setItem('tcv_offers', JSON.stringify(all));
+          // Also update the corresponding application so poster inbox shows declined status; add log
+          try {
+            const apps = JSON.parse(localStorage.getItem('tcv_applications') || '[]');
+            const appIdx = apps.findIndex(a => a.jobId===jobId && a.candidateEmail===email && a.posterEmail===all[idx].posterEmail && (a.offerId===id || !a.offerId));
+            if (appIdx > -1) {
+              apps[appIdx].status = 'offered-declined';
+              apps[appIdx].log = apps[appIdx].log || [];
+              apps[appIdx].log.unshift({ ts: Date.now(), by: email, action: 'offer_declined', offerId: id });
+              localStorage.setItem('tcv_applications', JSON.stringify(apps));
+            }
+          } catch (e) { /* ignore */ }
+          // Update DOM in-place
+          const badge = btn.closest('.border')?.querySelector('.badge');
+          if (badge) { badge.className = 'badge bg-danger'; badge.textContent = 'Đã từ chối'; }
+          const actionsWrap = btn.closest('.border')?.querySelector('.mt-2');
+          if (actionsWrap) actionsWrap.innerHTML = "<div class='small text-danger'>Bạn đã từ chối đề nghị.</div>";
           showToast('Đã từ chối đề nghị', 'success');
-          window.location.reload();
         }
       });
     });
