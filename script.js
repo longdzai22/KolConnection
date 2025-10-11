@@ -351,7 +351,7 @@ const renderDetailPage = async () => {
       createdAt: Date.now()
     });
     localStorage.setItem('tcv_applications', JSON.stringify(applications));
-    showToast('Ứng tuyển thành công! CV của bạn đã gửi đến nhà tuyển dụng.', 'success');
+    showToast('Ứng tuyển thành công! CV của bạn đã gửi đến brand.', 'success');
   });
 };
 
@@ -560,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
       userArea.classList.add('d-flex');
       const displayName = persist.getName() || getEmailName(email);
       const role = persist.getRole();
-      if (greet) greet.textContent = `Xin chào, ${displayName}${role ? role === 'poster' ? ' (Nhà tuyển dụng)' : ' (Ứng viên)' : ''}`;
+      if (greet) greet.textContent = `Xin chào, ${displayName}${role ? role === 'poster' ? ' (brand)' : ' (kol)' : ''}`;
       const back = document.getElementById('employerBackLink');
       if (back) back.classList.toggle('d-none', role !== 'poster');
       const seekerLink = document.getElementById('seekerAppliedLink');
@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const job = {
         id: `${Date.now()}`,
         title: title.value.trim(),
-        company: persist.getName() || 'Nhà tuyển dụng',
+        company: persist.getName() || 'brand',
         location: locationInput.value.trim(),
         salary: salary.value.trim(),
         type: type.value.trim() || 'Toàn thời gian',
@@ -752,7 +752,7 @@ document.addEventListener('DOMContentLoaded', () => {
       userAreaGlobal.classList.add('d-flex');
       const displayName = persist.getName() || getEmailName(email);
       const role = persist.getRole();
-      if (greetGlobal) greetGlobal.textContent = `Xin chào, ${displayName}${role ? role === 'poster' ? ' (Nhà tuyển dụng)' : ' (Ứng viên)' : ''}`;
+      if (greetGlobal) greetGlobal.textContent = `Xin chào, ${displayName}${role ? role === 'poster' ? ' (brand)' : ' (kol)' : ''}`;
     }
     on(logoutGlobal, 'click', () => {
       persist.clearAll();
@@ -815,7 +815,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="border rounded-3 p-2">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <div class="fw-semibold small"> Tên ứng viên: ${displayName}</div>
+                  <div class="fw-semibold small"> Tên kol: ${displayName}</div>
                   <div class="text-secondary small">Ứng tuyển: ${a.jobTitle}</div>
                   ${logText?`<div class="small text-secondary mt-1">${logText}</div>`:''}
                   ${a.candidateCv?`<div class="small text-muted mt-1">${a.candidateCv.position?(`${a.candidateCv.position} • `):''}${a.candidateCv.skills?(`${a.candidateCv.skills.split(',').slice(0,3).join(', ')}`):''}</div>`:''}
@@ -931,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // mark as rejected and add a log entry so the seeker sees a notification
             all[idx].status = 'rejected';
             all[idx].log = all[idx].log || [];
-            all[idx].log.unshift({ ts: Date.now(), by: myEmail, action: 'application_rejected', note: 'Hồ sơ bị từ chối bởi nhà tuyển dụng' });
+            all[idx].log.unshift({ ts: Date.now(), by: myEmail, action: 'application_rejected', note: 'Hồ sơ bị từ chối bởi brand' });
             localStorage.setItem('tcv_applications', JSON.stringify(all));
             showToast('Đã từ chối hồ sơ', 'success');
             doFilter();
@@ -1009,7 +1009,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Thông tin ứng viên</h5>
+                <h5 class="modal-title">Thông tin kol</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -1039,7 +1039,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const skillsList = seeker?.skills ? (Array.isArray(seeker.skills) ? seeker.skills.join(', ') : seeker.skills) : '';
           metaEl.innerHTML = `
             <div class="small">
-              <div class="fw-semibold mb-1"><strong>Tên ứng viên: </strong> ${seeker?.name || cand}</div>
+              <div class="fw-semibold mb-1"><strong>Tên kol: </strong> ${seeker?.name || cand}</div>
               ${seeker?.position ? `<div><strong>Vị trí:</strong> ${seeker.position}</div>` : ''}
               ${skillsList ? `<div><strong>Kỹ năng:</strong> ${skillsList}</div>` : ''}
               ${seeker?.experience ? `<div><strong>Kinh nghiệm:</strong> ${seeker.experience}</div>` : ''}
@@ -1104,13 +1104,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // show application status and latest log for seeker awareness
       const statusBadge = a.status ? `<div class="mt-2"><span class="badge ${a.status==='rejected'?'bg-danger':a.status==='offered'?'bg-primary':a.status==='offered-accepted'?'bg-success':a.status==='offered-declined'?'bg-danger':'bg-secondary'}">${a.status==='rejected'?'Đã bị từ chối':a.status==='offered'?'Đã nhận đề nghị':a.status==='offered-accepted'?'Đề nghị đã chấp nhận':a.status==='offered-declined'?'Đề nghị đã từ chối':'Đã ứng tuyển'}</span></div>` : '';
       const lastAppLog = (a.log && a.log.length) ? a.log[0] : null;
-      const logHtml = lastAppLog ? `<div class="small text-secondary mt-1">${lastAppLog.action==='application_rejected' ? 'Nhà tuyển dụng đã từ chối hồ sơ của bạn' : lastAppLog.action==='offer_sent' ? `Nhận đề nghị: ${lastAppLog.price? (lastAppLog.price + ' VNĐ') : ''}` : lastAppLog.action==='offer_accepted' ? 'Bạn đã chấp nhận đề nghị' : lastAppLog.action==='offer_declined' ? 'Bạn đã từ chối đề nghị' : ''}</div>` : '';
+      const logHtml = lastAppLog ? `<div class="small text-secondary mt-1">${lastAppLog.action==='application_rejected' ? 'brand đã từ chối hồ sơ của bạn' : lastAppLog.action==='offer_sent' ? `Nhận đề nghị: ${lastAppLog.price? (lastAppLog.price + ' VNĐ') : ''}` : lastAppLog.action==='offer_accepted' ? 'Bạn đã chấp nhận đề nghị' : lastAppLog.action==='offer_declined' ? 'Bạn đã từ chối đề nghị' : ''}</div>` : '';
       return `
         <div class="border rounded-4 p-3">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <div class="fw-semibold">${a.jobTitle}</div>
-              <div class="text-secondary small">Nhà tuyển dụng: ${a.posterEmail || '—'}</div>
+              <div class="text-secondary small">brand: ${a.posterEmail || '—'}</div>
               ${statusBadge}
               ${logHtml}
             </div>
